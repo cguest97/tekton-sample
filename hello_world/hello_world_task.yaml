@@ -1,0 +1,14 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: hello-world-task
+spec:
+  params:
+    - name: username
+      description: the username
+  steps:
+    - name: say-hello
+      image: alpine
+      script: |
+        #!/bin/sh
+        echo "Hello, $(params.username)"

@@ -1,0 +1,41 @@
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name: hello-world-template
+spec:
+  params:
+    - name: username
+      description: the username
+      default: "Kubernetes"
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        generateName: hello-world-run-
+      spec:
+        pipelineRef:
+          name: hello-world-pipeline
+        params:
+          - name: username
+            value: $(tt.params.username)
+---
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerBinding
+metadata:
+  name: hello-world-binding
+spec:
+  params:
+    - name: username
+      value: $(body.username)
+---
+apiVersion: triggers.tekton.dev/v1beta1
+kind: EventListener
+metadata:
+  name: hello-world-listener
+spec:
+  triggers:
+    - name: hello-world-trigger
+      bindings:
+        - ref: hello-world-binding
+      template:
+        ref: hello-world-template

@@ -1,0 +1,15 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: hello-world-pipeline
+spec:
+  params:
+    - name: username
+      description: the username
+  tasks:
+    - name: hello-world-task
+      taskRef:
+        name: hello-world-task
+      params:
+        - name: username
+          value: $(params.username)
