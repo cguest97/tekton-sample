@@ -6,10 +6,16 @@ spec:
   params:
     - name: IMAGE
       description: Name (reference) of the image to build.
+  workspaces:
+    - name: pipeline-ws1
+      emptyDir: {}
   tasks:
     - name: build-image
       taskRef:
         name: kaniko-chains
+      workspaces:
+        - name: source
+          workspace: pipeline-ws1
       params:
         - name: IMAGE
           value: $(params.IMAGE)
