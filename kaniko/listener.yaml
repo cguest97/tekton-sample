@@ -18,6 +18,9 @@ spec:
         workspaces:
           - name: pipeline-ws1
             emptyDir: {}
+          - name: pipeline-ws2
+            secret:
+              secretName: registry-credentials
         params:
           - name: IMAGE
             value: $(tt.params.IMAGE)

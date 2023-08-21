@@ -8,6 +8,7 @@ spec:
       description: Name (reference) of the image to build.
   workspaces:
     - name: pipeline-ws1
+    - name: pipeline-ws2
   tasks:
     - name: build-image
       taskRef:
@@ -15,6 +16,8 @@ spec:
       workspaces:
         - name: source
           workspace: pipeline-ws1
+        - name: dockerconfig
+          workspace: pipeline-ws2
       params:
         - name: IMAGE
           value: $(params.IMAGE)
