@@ -8,7 +8,6 @@ spec:
       description: Name (reference) of the image to build.
   workspaces:
     - name: pipeline-ws1
-      emptyDir: {}
   tasks:
     - name: build-image
       taskRef:

@@ -15,6 +15,9 @@ spec:
       spec:
         pipelineRef:
           name: kaniko-pipeline
+        workspaces:
+          - name: pipeline-ws1
+            emptyDir: {}
         params:
           - name: IMAGE
             value: $(tt.params.IMAGE)
