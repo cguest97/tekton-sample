@@ -7,7 +7,7 @@ spec:
     - name: IMAGE
       description: Name (reference) of the image to build.
       default: "uk.icr.io/cameron-guest/kaniko-chains"
-  resourceTemplates:
+  resourcetemplates:
     - apiVersion: tekton.dev/v1beta1
       kind: PipelineRun
       metadata:
