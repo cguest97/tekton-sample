@@ -1,0 +1,41 @@
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name: kaniko-template
+spec:
+  params:
+    - name: IMAGE
+      description: Name (reference) of the image to build.
+      default: "uk.icr.io/cameron-guest/kaniko-chains"
+  resourceTemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        generateName: kaniko-run-
+      spec:
+        pipelineRef:
+          name: kaniko-pipeline
+        params:
+          - name: IMAGE
+            value: $(tt.params.IMAGE)
+---
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerBinding
+metadata:
+  name: kaniko-binding
+spec:
+  params:
+    - name: IMAGE
+      value: $(body.IMAGE)
+---
+apiVersion: triggers.tekton.dev/v1beta1
+kind: EventListener
+metadata:
+  name: kaniko-listener
+spec:
+  triggers:
+    - name: kaniko-trigger
+      bindings:
+        - ref: kaniko-binding
+      template:
+        ref: kaniko-template
