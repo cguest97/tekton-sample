@@ -7,7 +7,16 @@ spec:
     - name: IMAGE
       description: Name (reference) of the image to build.
       default: "uk.icr.io/cameron-guest/kaniko-chains"
+    - name: DOCKERCONFIG
+      description: Docker config JSON for image
   resourcetemplates:
+    - apiVersion: v1
+      kind: Secret
+      data:
+        .dockerconfigjson: $(tt.params.DOCKERCONFIG)
+      metadata:
+        name: registry-credentials
+      type: kubernetes.io/dockerconfigjson
     - apiVersion: tekton.dev/v1beta1
       kind: PipelineRun
       metadata:
@@ -24,6 +33,9 @@ spec:
         params:
           - name: IMAGE
             value: $(tt.params.IMAGE)
+        podTemplate:
+          imagePullSecrets:
+            - name: registry-credentials
 ---
 apiVersion: triggers.tekton.dev/v1beta1
 kind: TriggerBinding
